@@ -11,16 +11,16 @@ jobs:
     runs-on: macos-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '18'
         cache: 'npm'
     
     - name: Install dependencies
-      run: npm ci
+      run: npm install
     
     - name: Build Chrome extension
       run: |
@@ -55,25 +55,25 @@ jobs:
         xcrun simctl shutdown booted
     
     - name: Upload Chrome extension artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: chrome-extension
         path: artifacts/chrome-extension.zip
     
     - name: Upload Safari iOS artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: safari-ios-app
         path: artifacts/safari-ios-app
     
     - name: Upload test screenshots
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-screenshots
         path: artifacts/screenshots
     
     - name: Upload test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: test-results
