@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Browser History Tracker</title>
+  <link rel="stylesheet" href="css/popup.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Browser History Tracker</h1>
+    
+    <div class="stats">
+      <div class="stat-item">
+        <span class="stat-label">Device ID:</span>
+        <span id="device-id" class="stat-value">Loading...</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Entries:</span>
+        <span id="entry-count" class="stat-value">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Expiration:</span>
+        <span id="expiration-days" class="stat-value">30 days</span>
+      </div>
+    </div>
+    
+    <div class="history-list">
+      <h2>Recent History</h2>
+      <div id="history-entries" class="entries">
+        <div class="loading">Loading history...</div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <button id="open-options">Settings</button>
+    </div>
+  </div>
+  
+  <script src="js/popup.js" type="module"></script>
+</body>
+</html>

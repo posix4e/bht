@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Browser History Tracker",
+  "version": "1.0.0",
+  "description": "Track browser history across devices using Holepunch",
+  "permissions": [
+    "storage",
+    "history",
+    "tabs"
+  ],
+  "background": {
+    "service_worker": "js/background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/icon16.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    }
+  },
+  "options_page": "options.html",
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  }
+}

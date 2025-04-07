@@ -1,0 +1,47 @@
+{
+  "name": "browser-history-tracker",
+  "version": "1.0.0",
+  "description": "Track browser history across devices using Holepunch",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "build:chrome": "npm run build && cd dist && zip -r ../artifacts/chrome-extension.zip .",
+    "build:safari-ios": "xcrun safari-web-extension-converter dist --project-location artifacts/safari-ios --app-name 'Browser History Tracker' --bundle-identifier 'dev.allhands.browserhistorytracker' --no-open",
+    "test": "playwright test",
+    "test:chrome": "playwright test tests/chrome.spec.js",
+    "test:safari-ios": "xcrun simctl launch --console-pty 'iPhone 14' dev.allhands.browserhistorytracker",
+    "prepare-artifacts": "mkdir -p artifacts/screenshots",
+    "generate-icons": "node generate-icons.js"
+  },
+  "keywords": [
+    "browser",
+    "history",
+    "extension",
+    "holepunch"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@hyperswarm/dht": "^6.6.1",
+    "b4a": "^1.6.4",
+    "hyperbee": "^2.15.1",
+    "hypercore": "^10.18.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.5",
+    "@babel/preset-env": "^7.22.5",
+    "@playwright/test": "^1.35.1",
+    "babel-loader": "^9.1.2",
+    "buffer": "^6.0.3",
+    "canvas": "^2.11.2",
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "crypto-browserify": "^3.12.0",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
+    "stream-browserify": "^3.0.0",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.4",
+    "xvfb": "^0.4.0"
+  }
+}
