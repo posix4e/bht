@@ -1,8 +1,18 @@
 // Import Holepunch for synchronization
-import * as Hyperswarm from '@hyperswarm/dht';
-import Hyperbee from 'hyperbee';
-import Hypercore from 'hypercore';
-import b4a from 'b4a';
+// Using dynamic imports to ensure compatibility with browser extensions
+const importHolepunch = async () => {
+  try {
+    const Hyperswarm = await import('@hyperswarm/dht');
+    const Hyperbee = await import('hyperbee');
+    const Hypercore = await import('hypercore');
+    const b4a = await import('b4a');
+    
+    return { Hyperswarm, Hyperbee, Hypercore, b4a };
+  } catch (error) {
+    console.error('Failed to import Holepunch modules:', error);
+    return null;
+  }
+};
 
 // Global variables
 let deviceId = '';
@@ -49,33 +59,47 @@ function generateDeviceId() {
 
 // Generate new public/private key pair
 async function generateNewKeys() {
-  const core = new Hypercore(null);
-  await core.ready();
-  
-  publicKey = b4a.toString(core.key, 'hex');
-  privateKey = b4a.toString(core.secretKey, 'hex');
-  
-  await chrome.storage.local.set({ publicKey, privateKey });
+  try {
+    const modules = await importHolepunch();
+    if (!modules) return;
+    
+    const { Hypercore, b4a } = modules;
+    
+    const core = new Hypercore.default(null);
+    await core.ready();
+    
+    publicKey = b4a.default.toString(core.key, 'hex');
+    privateKey = b4a.default.toString(core.secretKey, 'hex');
+    
+    await chrome.storage.local.set({ publicKey, privateKey });
+  } catch (error) {
+    console.error('Failed to generate new keys:', error);
+  }
 }
 
 // Initialize Holepunch for synchronization
 async function initializeHolepunch() {
   try {
+    const modules = await importHolepunch();
+    if (!modules) return;
+    
+    const { Hypercore, Hyperbee, Hyperswarm, b4a } = modules;
+    
     // Create a hypercore with the provided keys
-    historyCore = new Hypercore('./history-storage', b4a.from(publicKey, 'hex'), {
-      secretKey: b4a.from(privateKey, 'hex')
+    historyCore = new Hypercore.default('./history-storage', b4a.default.from(publicKey, 'hex'), {
+      secretKey: b4a.default.from(privateKey, 'hex')
     });
     
     await historyCore.ready();
     
     // Create a hyperbee database on top of the hypercore
-    historyBee = new Hyperbee(historyCore, {
+    historyBee = new Hyperbee.default(historyCore, {
       keyEncoding: 'utf-8',
       valueEncoding: 'json'
     });
     
     // Join the swarm to sync with other devices
-    swarm = new Hyperswarm();
+    swarm = new Hyperswarm.default();
     
     swarm.on('connection', (conn) => {
       // Replicate the hypercore with peers

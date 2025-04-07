@@ -1,6 +1,7 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
   mode: 'production',
@@ -38,6 +39,12 @@ module.exports = {
         { from: 'src/images', to: 'images' },
       ],
     }),
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
+    }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_DEBUG': JSON.stringify(process.env.NODE_DEBUG),
+    }),
   ],
   resolve: {
     extensions: ['.js'],
@@ -49,5 +56,9 @@ module.exports = {
       fs: false,
       os: require.resolve('os-browserify/browser'),
     },
+  },
+  experiments: {
+    topLevelAwait: true,
+    asyncWebAssembly: true,
   },
 };

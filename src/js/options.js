@@ -1,6 +1,16 @@
 // Import Hypercore for key generation
-import Hypercore from 'hypercore';
-import b4a from 'b4a';
+// Using dynamic imports to ensure compatibility with browser extensions
+const importHolepunch = async () => {
+  try {
+    const Hypercore = await import('hypercore');
+    const b4a = await import('b4a');
+    
+    return { Hypercore, b4a };
+  } catch (error) {
+    console.error('Failed to import Holepunch modules:', error);
+    return null;
+  }
+};
 
 // DOM elements
 const deviceIdInput = document.getElementById('device-id');
@@ -49,11 +59,19 @@ function generateDeviceId() {
 // Generate new public/private key pair
 async function generateNewKeys() {
   try {
-    const core = new Hypercore(null);
+    const modules = await importHolepunch();
+    if (!modules) {
+      showStatusMessage('Failed to load Holepunch modules', 'error');
+      return;
+    }
+    
+    const { Hypercore, b4a } = modules;
+    
+    const core = new Hypercore.default(null);
     await core.ready();
     
-    const publicKey = b4a.toString(core.key, 'hex');
-    const privateKey = b4a.toString(core.secretKey, 'hex');
+    const publicKey = b4a.default.toString(core.key, 'hex');
+    const privateKey = b4a.default.toString(core.secretKey, 'hex');
     
     publicKeyInput.value = publicKey;
     privateKeyInput.value = privateKey;
